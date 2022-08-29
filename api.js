@@ -33,7 +33,7 @@ const displayPhone = phones => {
     });
 
 }
-loadPhones();
+// loadPhones('');
 
 
 // document.getElementById("submit").addEventListener('click', ()=>{
@@ -46,4 +46,5 @@ const searchPhone = () => {
     const searchText = searchFiled.value;
     loadPhones(searchText)
 }
+loadPhones('phone')
 
