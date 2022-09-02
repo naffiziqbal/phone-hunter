@@ -1,49 +1,40 @@
-const spinner = document.getElementById('spinner')
-
-
-const loadPhones = async (searchText) => {
+// Calling API From The API DataBase  
+const loadPhones = async (searchText,dataLimit) => {
     const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`;
     const res = await fetch(url);
     const data = await res.json();
-    displayPhone(data.data);
+    displayPhone(data.data,dataLimit);
 }
 
-// const loadPhones = (searchText) => {
-//     fetch(`https://openapi.programming-hero.com/api/phones?search=${searchText}`)
-//         .then(res => res.json())
-//         .then(data => displayPhone(data.data))
-// }
-
-
-
-const displayPhone = phones => {
+const displayPhone = (phones, dataLimit )=> {
     const viewAll = document.getElementById('view-all')
     const phoneContainer = document.getElementById("phone-container");
     const noPhoneMessage =  document.getElementById("no-phone-message");
     phoneContainer.innerHTML = ` `;
-    // phones = phones.slice(0, 10);
     
-    
-    if(phones.length > 10){
+    // Only Show 10 Phones At a Time 
+    if(dataLimit && phones.length >= 10){
         phones = phones.slice(0, 10);
+        viewAll.classList.remove('d-none')
         
     }else{
         viewAll.classList.add('d-none')
-     }
-
-     
-
+    }
+    
     // Retun Error Message If No Matching Found 
     if(phones.length === 0){
-       noPhoneMessage.classList.remove('d-none');
-
+        noPhoneMessage.classList.remove('d-none');
+        
     }else{
         noPhoneMessage.classList.add('d-none')
+        
+    };
 
-    }
-
+    
+    
+    // Making Phone Container  
     phones.forEach(phone => {
-
+        
         const newContainer = document.createElement('div');
         newContainer.classList.add('col')
         newContainer.innerHTML = ` 
@@ -56,22 +47,44 @@ const displayPhone = phones => {
         </div>
         `;
         phoneContainer.appendChild(newContainer);
-        spinner.classList.add('d-none')
-
+        toogleSpinner(false);        
     });
-
+    
 }
 
+// Intrigating loading Spinner  
+const toogleSpinner = isLoading =>{
+    const spinner = document.getElementById('spinner')
+    if(isLoading){
+        spinner.classList.remove('d-none')
+    }
+    else{
+        spinner.classList.add('d-none')
+    }
+}
+
+// Phone Searching Function  
 const searchPhone = () => {
-    spinner.classList.remove('d-none')
+    searchProgress(10)
+}
+
+
+
+// Functionallize View All Button   
+
+
+
+
+const searchProgress = (dataLimit) => {
+    toogleSpinner(true);
     const searchFiled = document.getElementById('search-filed');
     const searchText = searchFiled.value;
-    loadPhones(searchText)
+    loadPhones(searchText,dataLimit);
+    console.log(dataLimit);
+    
 }
+document.getElementById('view-all').addEventListener('click', ()=>{
+    searchProgress();
+})
+// Inntially Load All Phone 
 loadPhones('phone')
-
-
-
-// Functionallize View All Button  
-
-
