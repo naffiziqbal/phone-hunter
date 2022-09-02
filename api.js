@@ -17,10 +17,21 @@ const loadPhones = async (searchText) => {
 
 
 const displayPhone = phones => {
+    const viewAll = document.getElementById('view-all')
     const phoneContainer = document.getElementById("phone-container");
     const noPhoneMessage =  document.getElementById("no-phone-message");
     phoneContainer.innerHTML = ` `;
-    phones = phones.slice(0, 10);
+    // phones = phones.slice(0, 10);
+    
+    
+    if(phones.length > 10){
+        phones = phones.slice(0, 10);
+        
+    }else{
+        viewAll.classList.add('d-none')
+     }
+
+     
 
     // Retun Error Message If No Matching Found 
     if(phones.length === 0){
@@ -58,4 +69,9 @@ const searchPhone = () => {
     loadPhones(searchText)
 }
 loadPhones('phone')
+
+
+
+// Functionallize View All Button  
+
 
